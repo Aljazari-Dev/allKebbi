@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: kebbi-dashboard
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python server.py
+    envVars:
+      - key: DATA_DIR
+        value: /var/data
+      - key: SUBJECT_RAG_DIR
+        value: /var/data/subject_rag_books
+      - key: OPENAI_API_KEY
+        sync: false
+    disk:
+      name: kebbi-dashboard-disk
+      mountPath: /var/data
+      sizeGB: 1
+
+  - type: web
+    name: kebbi-call
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python services/kebbicall.py
+    envVars:
+      - key: OPENAI_API_KEY
+        sync: false
+
+  - type: web
+    name: kebbi-movement
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python services/movement_server.py

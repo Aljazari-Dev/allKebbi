@@ -1,0 +1,15 @@
+flask==3.0.3
+requests==2.32.3
+
+flask-socketio==5.3.6
+python-socketio==5.11.3
+python-engineio==4.9.1
+
+gunicorn==22.0.0
+eventlet==0.36.1
+
+openai==1.40.0
+
+numpy==1.26.4
+python-docx==1.1.2
+sentence-transformers==3.0.1

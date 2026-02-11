@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+
+# Virtual env
+.venv/
+venv/
+ENV/
+env/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Local data (اختياري)
+# إذا تريد البيانات تكون فقط على Render Disk لا ترفعها للـ Git:
+data/
+subject_rag_books/
+*.docx
+*_cleaned.txt
