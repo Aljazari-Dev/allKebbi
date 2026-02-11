@@ -13,6 +13,12 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 
 
 
+
+
+
+
+
+
 def openai_chat_completion(system, prompt, model=None, temperature=0.3, max_tokens=400):
     """
     Call OpenAI Chat Completions API using requests.
