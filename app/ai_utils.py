@@ -9,8 +9,8 @@ from app.config import ROUTER_SYSTEM_PROMPT
 from app.storage import SETTINGS
 
 # هذا هو نفس الكلاينت من الكود الأصلي (نفس الـ API key)
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY", ""))
 
 
 
