@@ -6,7 +6,6 @@ python-socketio==5.11.3
 python-engineio==4.9.1
 
 gunicorn==22.0.0
-eventlet==0.36.1
 
 openai==1.40.0
 
