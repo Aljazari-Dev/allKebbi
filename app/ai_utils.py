@@ -3,21 +3,11 @@ import json
 import os
 
 import requests
-from openai import OpenAI
 
 from app.config import ROUTER_SYSTEM_PROMPT
 from app.storage import SETTINGS
 
 # هذا هو نفس الكلاينت من الكود الأصلي (نفس الـ API key)
-
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY", ""))
-
-
-
-
-
-
-
 
 def openai_chat_completion(system, prompt, model=None, temperature=0.3, max_tokens=400):
     """
@@ -60,18 +50,33 @@ def openai_chat_completion(system, prompt, model=None, temperature=0.3, max_toke
 
 
 def classify_intent(user_text: str, lang: str = "ar-SA"):
+    api_key = (SETTINGS.get("api_key") or "").strip() or os.getenv("OPENAI_API_KEY", "").strip()
+    if not api_key:
+        return {"intent": "unknown", "need_rag": False, "assistant_reply": "Missing OpenAI API key."}
+
     msg = f"LANG={lang}\nTEXT={user_text}"
-    rsp = client.chat.completions.create(
-        model="gpt-4.1-mini",
-        messages=[
+
+    payload = {
+        "model": "gpt-4.1-mini",
+        "temperature": 0,
+        "messages": [
             {"role": "system", "content": ROUTER_SYSTEM_PROMPT},
             {"role": "user", "content": msg},
         ],
-        temperature=0,
-    )
-    raw = rsp.choices[0].message.content
-    data = json.loads(raw)
-    return data   # {intent, need_rag, assistant_reply}
+    }
+
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json",
+    }
+
+    r = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload, timeout=30)
+    if r.status_code != 200:
+        return {"intent": "unknown", "need_rag": False, "assistant_reply": f"Router error {r.status_code}"}
+
+    raw = r.json()["choices"][0]["message"]["content"]
+    return json.loads(raw)
+    
 
 
 def lang_rule_system(lang_code: str) -> str:
