@@ -1,10 +1,11 @@
-import uuid
 from flask import Flask, request, jsonify
-from flask_socketio import SocketIO, emit, join_room, leave_room
+from flask_socketio import SocketIO, emit, join_room
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'aljazari-move-only'
-socketio = SocketIO(app, cors_allowed_origins="*")
+
+# ✅ إجبار async_mode = threading (حتى ما يستخدم eventlet)
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode="threading")
 
 # device_id -> sid
 ONLINE_DEVICES = {}
